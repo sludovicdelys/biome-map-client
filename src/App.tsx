@@ -1,35 +1,62 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react';
+import { QueryClient, QueryClientProvider, useMutation } from '@tanstack/react-query';
+import { Container, Typography, Box, Paper } from '@mui/material';
+import { MapForm } from './components/MapForm';
+import { MapDisplay } from './components/MapDisplay';
+import { MapConfig, Biome } from './types';
+import { generateMap } from './api/mapApi';
 
-function App() {
-  const [count, setCount] = useState(0)
+const queryClient = new QueryClient();
+
+const MapGenerator: React.FC = () => {
+  const [map, setMap] = React.useState<Biome[][] | null>(null);
+
+  const mutation = useMutation({
+    mutationFn: generateMap, 
+    onSuccess: (data) => {
+      console.log('returnedData')
+      console.log(data)
+      setMap(data);
+    },
+  });
+
+  const handleSubmit = (config: MapConfig) => {
+    mutation.mutate(config);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <Container maxWidth="md" sx={{ 
+      height: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      margin: 'auto',
+      padding: 2
+      }}>
+      <Typography variant="h4" component="h1" gutterBottom>
+        Map Generator
+      </Typography>
+      <MapForm onSubmit={handleSubmit} />
+      <Box sx={{
+        mt: 4,
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'center' }}>
+        {mutation.isPending && <Typography>Generating map...</Typography>}
+        {mutation.isError && (
+          <Typography color="error">An error occurred: {(mutation.error as Error).message}</Typography>
+        )}
+        {mutation.isSuccess && <MapDisplay map={mutation.data} />}
+      </Box> 
+    </Container>
+  );
+};
 
-export default App
+const App: React.FC = () => (
+  <QueryClientProvider client={queryClient}>
+    <MapGenerator />
+  </QueryClientProvider>
+);
+
+export default App;
