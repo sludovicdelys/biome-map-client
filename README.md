@@ -1,30 +1,47 @@
-# React + TypeScript + Vite
+# Eco Impact Map Generator - Front-end
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
+This React application is part of the Eco Impact Map Generator project. It provides a user interface for generating and displaying random biome maps based on user-defined configurations.
 
-Currently, two official plugins are available:
+## Technologies Used
+- React 18
+- TypeScript
+- Material-UI (MUI)
+- React Query
+- Vite (for building and development)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Setup and Installation
+1. Ensure you have Node.js (version 14 or later) installed on your system.
+2. Clone this repository to your local machine.
+3. Navigate to the project directory in your terminal.
+4. Run `npm install` to install all dependencies.
 
-## Expanding the ESLint configuration
+## Running the Application
+- Development mode: Run `npm run dev`
+- Production build: Run `npm run build` followed by `npm run preview`
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Project Structure
+- `src/`
+  - `components/`: React components (MapForm, MapDisplay, etc.)
+  - `api/`: API integration functions
+  - `types/`: TypeScript type definitions
+  - `App.tsx`: Main application component
+  - `main.tsx`: Entry point of the application
 
-- Configure the top-level `parserOptions` property like this:
+## Key Features
+- Interactive form for map configuration
+- Real-time map generation and display
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json', './tsconfig.app.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+## Testing
+Run `npm test` to execute the test suite.
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## Future Improvements
+- Implement more detailed error handling
+- Add unit and integration tests
+- Enhance accessibility features
+- Responsive design for various screen sizes
+
+## Contributing
+Contributions are welcome. Please fork the repository and submit pull requests for any enhancements.
+
+## License
