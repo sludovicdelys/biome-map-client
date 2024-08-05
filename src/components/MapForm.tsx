@@ -12,13 +12,14 @@ export const MapForm: React.FC<Props> = ({ onSubmit }) => {
     const [baseBiome, setBaseBiome] = useState<Biome>("ocean");
     const [width, setWidth] = useState(10);
     const [height, setHeight] = useState(10);
+    const [numBiomes, setNumBiomes] = useState(4);
   
     const handleSubmit = (e: React.FormEvent) => {
       e.preventDefault();
       const config: MapConfig = {
         availableBiome: BIOMES,
         baseBiome,
-        numberOfBiomes: BIOMES.length,
+        numberOfBiomes: numBiomes,
         width,
         height
       };
@@ -62,6 +63,14 @@ export const MapForm: React.FC<Props> = ({ onSubmit }) => {
           type="number"
           value={height}
           onChange={(e) => setHeight(Number(e.target.value))}
+          InputProps={{ inputProps: { min: 1 } }}
+          fullWidth
+        />
+        <TextField
+          label="Number of Biomes"
+          type="number"
+          value={numBiomes}
+          onChange={(e) => setNumBiomes(Number(e.target.value))}
           InputProps={{ inputProps: { min: 1 } }}
           fullWidth
         />
