@@ -1,6 +1,6 @@
 import React from 'react';
 import { QueryClient, QueryClientProvider, useMutation } from '@tanstack/react-query';
-import { Container, Typography, Box, Paper } from '@mui/material';
+import { Container, Typography, Box} from '@mui/material';
 import { MapForm } from './components/MapForm';
 import { MapDisplay } from './components/MapDisplay';
 import { MapConfig, Biome } from './types';
@@ -11,11 +11,11 @@ const queryClient = new QueryClient();
 const MapGenerator: React.FC = () => {
   const [map, setMap] = React.useState<Biome[][] | null>(null);
 
+  console.log(map);
+
   const mutation = useMutation({
     mutationFn: generateMap, 
     onSuccess: (data) => {
-      console.log('returnedData')
-      console.log(data)
       setMap(data);
     },
   });
@@ -47,7 +47,7 @@ const MapGenerator: React.FC = () => {
         {mutation.isError && (
           <Typography color="error">An error occurred: {(mutation.error as Error).message}</Typography>
         )}
-        {mutation.isSuccess && <MapDisplay map={mutation.data} />}
+        {mutation.isSuccess && map && <MapDisplay map={map} />}
       </Box> 
     </Container>
   );
