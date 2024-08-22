@@ -1,16 +1,18 @@
-import { MapConfig } from '../types';
-import { Biome } from '../types';
+import { MapConfig } from "../types";
+import { GeneratedMap } from "../types";
 
-export const generateMap = async (config: MapConfig): Promise<Biome[][]> => {
-  const response = await fetch('http://localhost:5000/map/generate', {
-    method: 'POST',
+const API_URL = import.meta.env.VITE_API_URL;
+
+export const generateMap = async (config: MapConfig): Promise<GeneratedMap> => {
+  const response = await fetch(API_URL, {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(config),
   });
   if (!response.ok) {
-    throw new Error('Network response was not ok');
+    throw new Error("Network response was not ok");
   }
   return response.json();
 };

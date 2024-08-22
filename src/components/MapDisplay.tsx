@@ -1,46 +1,41 @@
-import React from 'react';
-import { Box, Paper } from '@mui/material';
-import { Biome } from '../types';
+import React, { useRef, useEffect } from "react";
+import { Box } from "@mui/material";
+import { GeneratedMap } from "../types";
 
 interface Props {
-  map: Biome[][];
+  map: GeneratedMap;
 }
 
-const biomeColors: Record<Biome, string> = {
-  plain: '#90EE90',
-  desert: '#FFD700',
-  forest: '#228B22',
-  ocean: '#1E90FF'
-};
-
 export const MapDisplay: React.FC<Props> = ({ map }) => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const canvasContext = canvas.getContext("2d");
+    if (!canvasContext) return;
+
+    const cellSize = 20;
+    canvas.width = cellSize * map.width;
+    canvas.height = cellSize * map.height;
+
+    const baseBiome = map.baseBiome;
+    canvasContext.fillStyle = baseBiome.color;
+    canvasContext.fillRect(0, 0, canvas.width, canvas.height);
+
+    map.biomePlacements.forEach((placement) => {
+      canvasContext.fillStyle = placement.biome.color;
+      const x = placement.x * cellSize;
+      const y = placement.y * cellSize;
+      const size = placement.size * cellSize;
+      canvasContext.fillRect(x, y, size, size);
+    });
+  }, [map]);
+
   return (
-    <Paper elevation={3} sx={{ p: 2, mt: 2 }}>
-      <Box
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: `repeat(${map[0].length}, 1fr)`,
-          gap: 0,
-          border: '1px solid #ccc',
-          width: 'fit-content',
-          margin: 'auto',
-          maxWidth: 'fit-content'
-        }}
-      >
-        {map.map((row, rowIndex) =>
-          row.map((biome, colIndex) => (
-            <Box
-              key={`${rowIndex}-${colIndex}`}
-              sx={{
-                width: 25,
-                height: 25,
-                backgroundColor: biomeColors[biome],
-                border: '1px solid rgba(0,0,0,0.1)'
-              }}
-            />
-          ))
-        )}
-      </Box>
-    </Paper>
+    <Box sx={{ overflowX: "auto", overflowY: "auto", mt: 2 }}>
+      <canvas ref={canvasRef} />
+    </Box>
   );
 };
