@@ -1,5 +1,7 @@
 # Map Generator - Front-end
 
+For details about the technical test, please see [TECHNICAL_TEST.md](./TECHNICAL_TEST.md).
+
 ## Overview
 This React application is part of the Eco Impact Map Generator technical interview. It provides a user interface for generating and displaying random biome maps based on user-defined configurations.
 
